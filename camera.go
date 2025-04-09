@@ -31,11 +31,6 @@ func (camera *Camera) Update() {
 	direction.Y = float32(math.Sin(deg2rad(float64(camera.Rot.X))))
 	direction.Z = float32(math.Sin(deg2rad(float64(camera.Rot.Y)))) * float32(math.Cos(deg2rad(float64(camera.Rot.X))))
 
-	move_dir_side := rl.NewVector3(0, 0, 0)
-	move_dir_side.X = float32(math.Cos(deg2rad(float64(camera.Rot.Y+90)))) * float32(math.Cos(deg2rad(float64(camera.Rot.X))))
-	// move_dir_side.Y = float32(math.Sin(deg2rad(float64(camera.Rot.X))))
-	move_dir_side.Z = float32(math.Sin(deg2rad(float64(camera.Rot.Y+90)))) * float32(math.Cos(deg2rad(float64(camera.Rot.X))))
-
 	rl.Vector3Normalize(direction)
 
 	camera.Camera.Position = camera.Pos
@@ -60,18 +55,6 @@ func (camera *Camera) Update() {
 		camera.Rot.X = 90
 	} else if camera.Rot.X <= -90 {
 		camera.Rot.X = -90
-	}
-
-	if rl.IsKeyDown(rl.KeyW) {
-		camera.Pos = rl.Vector3Add(camera.Pos, rl.NewVector3(direction.X/100, direction.Y/100, direction.Z/100))
-	} else if rl.IsKeyDown(rl.KeyS) {
-		camera.Pos = rl.Vector3Add(camera.Pos, rl.NewVector3(-direction.X/100, -direction.Y/100, -direction.Z/100))
-	}
-
-	if rl.IsKeyDown(rl.KeyD) {
-		camera.Pos = rl.Vector3Add(camera.Pos, rl.NewVector3(move_dir_side.X/100, move_dir_side.Y/100, move_dir_side.Z/100))
-	} else if rl.IsKeyDown(rl.KeyA) {
-		camera.Pos = rl.Vector3Add(camera.Pos, rl.NewVector3(-move_dir_side.X/100, -move_dir_side.Y/100, -move_dir_side.Z/100))
 	}
 
 	OldMousePos = rl.GetMousePosition()

@@ -12,9 +12,13 @@ var lights = []Light{}
 
 var (
 	cube_mesh rl.Model
+	dog_model rl.Model
+
+	dt float64
 )
 
 func update() {
+	player.Update()
 	camera.Update()
 
 	for li := 0; li < len(lights); li++ {
@@ -35,6 +39,8 @@ func draw() {
 		p.Draw()
 	}
 
+	rl.DrawModel(dog_model, rl.NewVector3(30, -2, 30), 1, rl.Beige)
+
 	rl.EndMode3D()
 
 	rl.EndDrawing()
@@ -43,7 +49,12 @@ func draw() {
 func main() {
 	rl.InitWindow(1280, 720, "push jump")
 
+	// rl.SetTargetFPS(60)
+
+	rl.SetConfigFlags(rl.FlagMsaa4xHint)
+
 	cube_mesh = rl.LoadModel("./cube.obj")
+	dog_model = rl.LoadModel("./models/dog.obj")
 
 	light_shader = rl.LoadShader("./shaders/lighting.vs", "./shaders/lighting.fs")
 
@@ -60,6 +71,8 @@ func main() {
 
 	cube_mesh.Materials.Shader = light_shader
 	cube_mesh.Materials.Maps.Texture = rl.LoadTexture("./texture.png")
+
+	dog_model.Materials.Shader = light_shader
 
 	for !rl.WindowShouldClose() {
 		update()

@@ -26,5 +26,8 @@ func (p *Platform) Draw() {
 }
 
 var platforms = []Platform{
-	NewPlatform(rl.NewVector3(0, -5, 0), rl.NewVector3(10, 1, 10), color.RGBA{100, 100, 255, 255}),
+	NewPlatform(rl.NewVector3(0, -5, 0), rl.NewVector3(100, 1, 100), color.RGBA{100, 100, 255, 255}),
+	NewPlatform(rl.NewVector3(20, -5, 0), rl.NewVector3(10, 10, 10), color.RGBA{100, 100, 255, 255}),
+	NewPlatform(rl.NewVector3(20, 25, 0), rl.NewVector3(10, 10, 10), color.RGBA{100, 100, 255, 255}),
+	NewPlatform(rl.NewVector3(-20, -3, 0), rl.NewVector3(1, 1, 1), color.RGBA{100, 100, 255, 255}),
 }
