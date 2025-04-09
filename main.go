@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"image/color"
+	"os"
 
-	"github.com/gen2brain/raylib-go/raylib"
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var light_shader rl.Shader
@@ -17,9 +20,43 @@ var (
 	dt float64
 )
 
+var level_edit_mode = false
+
 func update() {
-	player.Update()
+	if !level_edit_mode {
+		player.Update()
+	} else {
+		camera.FreeCam()
+	}
+
+	if rl.IsKeyPressed(rl.KeyTab) {
+		level_edit_mode = !level_edit_mode
+		player.Pos = camera.Pos
+	}
+
 	camera.Update()
+
+	if rl.IsKeyPressed(rl.KeyE) {
+		tesst, err := json.Marshal(platforms)
+		if err != nil {
+			panic(err)
+		}
+
+		f, err := os.Create("level.json")
+		if err != nil {
+			panic(err)
+		}
+		f.Write(tesst)
+
+		test_var := []Platform{}
+
+		err = json.Unmarshal(tesst, &test_var)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(test_var)
+	}
 
 	for li := 0; li < len(lights); li++ {
 		light := lights[li]
@@ -54,6 +91,20 @@ func main() {
 	// rl.SetTargetFPS(60)
 
 	rl.SetConfigFlags(rl.FlagMsaa4xHint)
+
+	f, err := os.ReadFile("level.json")
+	if err != nil {
+		platforms = []Platform{
+			NewPlatform(rl.NewVector3(0, -5, 0), rl.NewVector3(100, 1, 100)),
+		}
+	} else {
+		temp_var := []Platform{}
+		err := json.Unmarshal(f, &temp_var)
+		if err != nil {
+			panic(err)
+		}
+		platforms = temp_var
+	}
 
 	cube_mesh = rl.LoadModel("./cube.obj")
 	dog_model = rl.LoadModel("./models/dog.obj")

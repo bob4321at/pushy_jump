@@ -15,7 +15,7 @@ func collide(pos1, size1, pos2, size2 rl.Vector3) bool {
 		pos1.Z-(size1.Z) < pos2.Z+(size2.Z)
 }
 
-func raycast(pos, rot rl.Vector3, distance float32) (rl.Vector3, bool) {
+func raycast(pos, rot rl.Vector3, distance float32) (rl.Vector3, bool, float32) {
 	for l := float32(0); l < distance; l++ {
 		direction := rl.NewVector3(0, 0, 0)
 
@@ -26,12 +26,12 @@ func raycast(pos, rot rl.Vector3, distance float32) (rl.Vector3, bool) {
 		for pi := 0; pi < len(platforms); pi++ {
 			platform := &platforms[pi]
 			if collide(rl.Vector3Add(pos, rl.NewVector3(direction.X*l, direction.Y*l, direction.Z*l)), rl.NewVector3(0.001, 0.001, 0.001), platform.Pos, platform.Size) {
-				return rl.Vector3Add(pos, rl.NewVector3(direction.X*l, direction.Y*l, direction.Z*l)), true
+				return rl.Vector3Add(pos, rl.NewVector3(direction.X*l, direction.Y*l, direction.Z*l)), true, l
 			}
 		}
 	}
 
-	return rl.NewVector3(0, 0, 0), false
+	return rl.NewVector3(0, 0, 0), false, -1
 }
 
 func deg2rad(num float64) float64 {

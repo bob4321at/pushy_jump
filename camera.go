@@ -60,4 +60,26 @@ func (camera *Camera) Update() {
 	OldMousePos = rl.GetMousePosition()
 }
 
+func (camera *Camera) FreeCam() {
+	move_dir := rl.NewVector3(0, 0, 0)
+	move_dir.X = float32(math.Cos(deg2rad(float64(camera.Rot.Y)))) * rl.GetFrameTime() * 60
+	move_dir.Y = float32(math.Sin(deg2rad(float64(camera.Rot.X)))) * rl.GetFrameTime() * 60
+	move_dir.Z = float32(math.Sin(deg2rad(float64(camera.Rot.Y)))) * rl.GetFrameTime() * 60
+	move_dir_side := rl.NewVector3(0, 0, 0)
+	move_dir_side.X = float32(math.Cos(deg2rad(float64(camera.Rot.Y+90)))) * rl.GetFrameTime() * 60
+	move_dir_side.Z = float32(math.Sin(deg2rad(float64(camera.Rot.Y+90)))) * rl.GetFrameTime() * 60
+
+	if rl.IsKeyDown(rl.KeyW) {
+		camera.Pos = rl.Vector3Add(rl.NewVector3(move_dir.X, move_dir.Y, move_dir.Z), camera.Pos)
+	} else if rl.IsKeyDown(rl.KeyS) {
+		camera.Pos = rl.Vector3Add(rl.NewVector3(-move_dir.X, -move_dir.Y, -move_dir.Z), camera.Pos)
+	}
+
+	if rl.IsKeyDown(rl.KeyD) {
+		camera.Pos = rl.Vector3Add(rl.NewVector3(move_dir_side.X, move_dir_side.Y, move_dir_side.Z), camera.Pos)
+	} else if rl.IsKeyDown(rl.KeyA) {
+		camera.Pos = rl.Vector3Add(rl.NewVector3(-move_dir_side.X, -move_dir_side.Y, -move_dir_side.Z), camera.Pos)
+	}
+}
+
 var camera = NewCamera(rl.NewVector3(5, 0, 0), rl.NewVector3(0, -90, 0))

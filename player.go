@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -25,9 +26,10 @@ func (p *Player) Update() {
 	p.Movement()
 
 	if rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
-		hit_pos, hit := raycast(rl.Vector3Add(p.Pos, rl.NewVector3(0, 1.5, 0)), camera.Rot, 100)
+		hit_pos, hit, ray_length := raycast(rl.Vector3Add(p.Pos, rl.NewVector3(0, 1.5, 0)), camera.Rot, 100)
+		fmt.Println(ray_length)
 		if hit {
-			platforms = append(platforms, NewPlatform(hit_pos, rl.NewVector3(1, 1, 1), rl.White))
+			platforms = append(platforms, NewPlatform(hit_pos, rl.NewVector3(1, 1, 1)))
 		}
 	}
 
