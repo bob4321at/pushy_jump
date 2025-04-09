@@ -9,18 +9,12 @@ import (
 
 type LightType int32
 
-const (
-	LightTypeDirectional LightType = iota
-	LightTypePoint
-)
-
 type Light struct {
-	shader    rl.Shader
-	lightType LightType
-	position  rl.Vector3
-	target    rl.Vector3
-	color     rl.Color
-	enabled   int32
+	shader   rl.Shader
+	position rl.Vector3
+	target   rl.Vector3
+	color    rl.Color
+	enabled  int32
 	// shader locations
 	enabledLoc int32
 	typeLoc    int32
@@ -34,7 +28,6 @@ const maxLightsCount = 4
 var lightCount = 0
 
 func NewLight(
-	lightType LightType,
 	position, target rl.Vector3,
 	color rl.Color,
 	shader rl.Shader) Light {
@@ -43,7 +36,6 @@ func NewLight(
 	}
 	if lightCount < maxLightsCount {
 		light.enabled = 1
-		light.lightType = lightType
 		light.position = position
 		light.target = target
 		light.color = color
@@ -61,7 +53,7 @@ func NewLight(
 func (lt *Light) UpdateValues() {
 	// Send to shader light enabled state and type
 	rl.SetShaderValue(lt.shader, lt.enabledLoc, unsafe.Slice((*float32)(unsafe.Pointer(&lt.enabled)), 4), rl.ShaderUniformInt)
-	rl.SetShaderValue(lt.shader, lt.typeLoc, unsafe.Slice((*float32)(unsafe.Pointer(&lt.lightType)), 4), rl.ShaderUniformInt)
+	// rl.SetShaderValue(lt.shader, lt.typeLoc, unsafe.Slice((*float32)(unsafe.Pointer(&lt.lightType)), 4), rl.ShaderUniformInt)
 
 	// Send to shader light position values
 	rl.SetShaderValue(lt.shader, lt.posLoc, []float32{lt.position.X, lt.position.Y, lt.position.Z}, rl.ShaderUniformVec3)

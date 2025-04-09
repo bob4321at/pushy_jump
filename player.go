@@ -22,6 +22,19 @@ func NewPlayer(pos rl.Vector3) (p Player) {
 }
 
 func (p *Player) Update() {
+	p.Movement()
+
+	if rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
+		hit_pos, hit := raycast(rl.Vector3Add(p.Pos, rl.NewVector3(0, 1.5, 0)), camera.Rot, 100)
+		if hit {
+			platforms = append(platforms, NewPlatform(hit_pos, rl.NewVector3(1, 1, 1), rl.White))
+		}
+	}
+
+	camera.Pos = rl.Vector3Add(p.Pos, rl.NewVector3(0, 1.5, 0))
+}
+
+func (p *Player) Movement() {
 	move_dir := rl.NewVector3(0, 0, 0)
 	move_dir.X = float32(math.Cos(deg2rad(float64(camera.Rot.Y)))) * rl.GetFrameTime() * float32(p.Speed)
 	move_dir.Z = float32(math.Sin(deg2rad(float64(camera.Rot.Y)))) * rl.GetFrameTime() * float32(p.Speed)
@@ -85,7 +98,6 @@ func (p *Player) Update() {
 	p.Vel.Y = p.Fake_Y_Vel * rl.GetFrameTime()
 
 	p.Pos = rl.Vector3Add(p.Pos, p.Vel)
-	camera.Pos = rl.Vector3Add(p.Pos, rl.NewVector3(0, 1.5, 0))
 }
 
 var player = NewPlayer(rl.NewVector3(0, 2, 0))

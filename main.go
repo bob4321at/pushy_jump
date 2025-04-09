@@ -43,6 +43,8 @@ func draw() {
 
 	rl.EndMode3D()
 
+	rl.DrawCircle(int32(rl.GetScreenWidth()/2), int32(rl.GetScreenHeight()/2), 5, rl.Black)
+
 	rl.EndDrawing()
 }
 
@@ -64,7 +66,7 @@ func main() {
 	shaderValue := []float32{0.1, 0.1, 0.1, 1.0}
 	rl.SetShaderValue(light_shader, ambientLoc, shaderValue, rl.ShaderUniformVec4)
 	lights = []Light{
-		NewLight(LightTypePoint, rl.NewVector3(0, 100, 100), rl.NewVector3(0, 0, 0), rl.White, light_shader),
+		NewLight(rl.NewVector3(0, 100, 100), rl.NewVector3(0, 0, 0), rl.White, light_shader),
 	}
 
 	rl.DisableCursor()
