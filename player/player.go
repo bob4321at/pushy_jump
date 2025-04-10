@@ -29,7 +29,7 @@ func (p *PlayerStruct) Update() {
 	p.Movement()
 
 	if rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
-		hit_pos, hit, ray_length := utils.Raycast(rl.Vector3Add(p.Pos, rl.NewVector3(0, 1.5, 0)), camera.Camera.Rot, 100)
+		hit_pos, hit, ray_length := utils.Raycast(rl.Vector3Add(p.Pos, rl.NewVector3(0, 1.5, 0)), camera.Camera.Rot, 300)
 		fmt.Println(ray_length)
 		if hit {
 			platform.Platforms = append(platform.Platforms, platform.NewPlatform(hit_pos, rl.NewVector3(1, 1, 1)))

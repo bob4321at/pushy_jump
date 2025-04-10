@@ -34,6 +34,28 @@ func Raycast(pos, rot rl.Vector3, distance float32) (rl.Vector3, bool, float32) 
 
 	return rl.NewVector3(0, 0, 0), false, -1
 }
+func RaycastForPlatform(pos, rot rl.Vector3, distance float32) (rl.Vector3, bool, float32, *platform.Platform) {
+	for l := float32(0); l < distance; l++ {
+		direction := rl.NewVector3(0, 0, 0)
+
+		direction.X = float32(math.Cos(Deg2Rad(float64(rot.Y)))) * float32(math.Cos(Deg2Rad(float64(rot.X))))
+		direction.Y = float32(math.Sin(Deg2Rad(float64(rot.X))))
+		direction.Z = float32(math.Sin(Deg2Rad(float64(rot.Y)))) * float32(math.Cos(Deg2Rad(float64(rot.X))))
+
+		for pi := 0; pi < len(platform.Platforms); pi++ {
+			platform := &platform.Platforms[pi]
+			if Collide(rl.Vector3Add(pos, rl.NewVector3(direction.X*l, direction.Y*l, direction.Z*l)), rl.NewVector3(0.001, 0.001, 0.001), platform.Pos, platform.Size) {
+				return rl.Vector3Add(pos, rl.NewVector3(direction.X*l, direction.Y*l, direction.Z*l)), true, l, platform
+			}
+		}
+	}
+
+	return rl.NewVector3(0, 0, 0), false, -1, &platform.Platform{}
+}
+
+func RemoveArrayElement[T any](index_to_remove int, slice *[]T) {
+	*slice = append((*slice)[:index_to_remove], (*slice)[index_to_remove+1:]...)
+}
 
 func Deg2Rad(num float64) float64 {
 	return num * 3.14159 / 180

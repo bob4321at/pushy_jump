@@ -40,10 +40,10 @@ func (camera *CameraStruct) Update() {
 
 	camera.Rot.Y += (float32(rl.GetMouseX()) - OldMousePos.X) * camera.Sensitivity
 	camera.Rot.X -= (float32(rl.GetMouseY()) - OldMousePos.Y) * camera.Sensitivity
-	if camera.Rot.X >= 90 {
-		camera.Rot.X = 90
-	} else if camera.Rot.X <= -90 {
-		camera.Rot.X = -90
+	if camera.Rot.X >= 89 {
+		camera.Rot.X = 89
+	} else if camera.Rot.X <= -89 {
+		camera.Rot.X = -89
 	}
 
 	OldMousePos = rl.GetMousePosition()
