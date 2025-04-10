@@ -1,4 +1,4 @@
-module main
+module pushy
 
 go 1.23.7
 
